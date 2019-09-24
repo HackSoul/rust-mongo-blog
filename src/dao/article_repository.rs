@@ -2,9 +2,12 @@ use crate::dao::mongo_connector;
 use crate::entity::article::Article;
 
 use mongodb::coll::results::InsertOneResult;
+use mongodb::coll::results::UpdateResult;
+use mongodb::coll::results::DeleteResult;
 use mongodb::{Bson, bson, doc, ThreadedClient};
 use mongodb::db::ThreadedDatabase;
 use mongodb::cursor::Cursor;
+use mongodb::oid::ObjectId;
 
 use chrono::offset::Utc;
 use chrono::DateTime;
@@ -36,4 +39,31 @@ pub fn create_article(article: Article) -> InsertOneResult {
 
     coll.insert_one(doc, None)
         .ok().expect("Failed to insert document.")
+}
+
+pub fn update_article(id: &String, title: &String, tags: &Vec<String>, markdown: &String) -> UpdateResult {
+    let client = mongo_connector::get_conn();
+    let coll = client.db("blog").collection("article");
+
+    let id = Bson::ObjectId(ObjectId::with_string(id).unwrap());
+    let mut tags_list:Vec<Bson> = vec![];
+    for str in tags {
+        tags_list.push(Bson::String(String::from(str)));
+    }
+    let doc = doc! {
+        "$set": {
+            "title": title,
+            "tags": tags_list,
+            "markdown": markdown
+        }
+    };
+
+    coll.update_one(doc!{"_id": id}, doc, None).unwrap()
+}
+
+pub fn delete_article(id: &String) -> DeleteResult {
+    let client = mongo_connector::get_conn();
+    let coll = client.db("blog").collection("article");
+    let id = Bson::ObjectId(ObjectId::with_string(id).unwrap());
+    coll.delete_many(doc!{"_id": id}, None).unwrap()
 }

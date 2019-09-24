@@ -3,6 +3,7 @@ use crate::entity::article::Article;
 
 use mongodb::Bson;
 use mongodb::ordered::OrderedDocument;
+use mongodb::coll::results::{UpdateResult, DeleteResult};
 use std::time::SystemTime;
 
 pub fn find_article_list() -> Vec<OrderedDocument> {
@@ -26,4 +27,12 @@ pub fn create_article(title: &String, topic_id: &String, tags: &Vec<String>, mar
         markdown: String::from(markdown)
     });
     result.inserted_id.unwrap()
+}
+
+pub fn update_article(id: &String, title: &String, tags: &Vec<String>, markdown: &String) -> UpdateResult {
+    article_repository::update_article(id, title, tags, markdown)
+}
+
+pub fn delete_article(id: &String) -> DeleteResult {
+    article_repository::delete_article(id)
 }

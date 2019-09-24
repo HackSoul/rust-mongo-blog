@@ -19,6 +19,7 @@ fn main() -> std::io::Result<()> {
             .route("/topic/create", web::post().to(api::topic_api::create_topic))
             .route("/topic/update", web::post().to(api::topic_api::update_topic))
             .route("/topic/delete", web::post().to(api::topic_api::delete_topic))
+            .route("/article/list", web::post().to(api::article_api::find_article_list))
             .route("/article/create", web::post().to(api::article_api::create_article))
     }).bind("127.0.0.1:8080")?.run()
 }

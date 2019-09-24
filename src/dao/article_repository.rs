@@ -4,13 +4,20 @@ use crate::entity::article::Article;
 use mongodb::coll::results::InsertOneResult;
 use mongodb::{Bson, bson, doc, ThreadedClient};
 use mongodb::db::ThreadedDatabase;
+use mongodb::cursor::Cursor;
 
 use chrono::offset::Utc;
 use chrono::DateTime;
 
+pub fn find_article_list() -> Cursor {
+    let client = mongo_connector::get_conn();
+    let coll = client.db("blog").collection("article");
+    coll.find(None, None).unwrap()
+}
+
 pub fn create_article(article: Article) -> InsertOneResult {
     let client = mongo_connector::get_conn();
-    let coll = client.db("blog").collection("topic");
+    let coll = client.db("blog").collection("article");
 
     let datetime: DateTime<Utc> = article.create_date.into();
     let mut tags_list:Vec<Bson> = vec![];

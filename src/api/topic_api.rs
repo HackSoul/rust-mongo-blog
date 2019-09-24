@@ -12,7 +12,7 @@ use std::time::SystemTime;
 use mongodb::Bson;
 use mongodb::ordered::OrderedDocument;
 
-pub fn find_topic_list() -> Result<web::Json<Vec<OrderedDocument>>>{
+pub fn find_topic_list() -> Result<web::Json<Vec<OrderedDocument>>> {
     let result = topic_service::find_topic_list();
     Ok(web::Json(result))
 }

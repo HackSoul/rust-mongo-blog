@@ -27,7 +27,7 @@ pub fn create_topic(topic: Topic) -> InsertOneResult {
         "create_date": format!("{}", datetime.format("%Y-%m-%d %T")),
     };
 
-    coll.insert_one(doc.clone(), None)
+    coll.insert_one(doc, None)
         .ok().expect("Failed to insert document.")
 }
 

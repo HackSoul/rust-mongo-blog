@@ -10,6 +10,12 @@ use mongodb::oid::ObjectId;
 use chrono::offset::Utc;
 use chrono::DateTime;
 
+pub fn find_topic_list() -> Cursor {
+    let client = mongo_connector::get_conn();
+    let coll = client.db("blog").collection("topic");
+    coll.find(None, None).unwrap()
+}
+
 pub fn create_topic(topic: Topic) -> InsertOneResult {
     let client = mongo_connector::get_conn();
     let coll = client.db("blog").collection("topic");
@@ -25,22 +31,16 @@ pub fn create_topic(topic: Topic) -> InsertOneResult {
         .ok().expect("Failed to insert document.")
 }
 
-pub fn find_topic_list() -> Cursor {
+pub fn update_topic(id: &String, name: &String) -> UpdateResult {
     let client = mongo_connector::get_conn();
     let coll = client.db("blog").collection("topic");
-    coll.find(None, None).unwrap()
+    let id = Bson::ObjectId(ObjectId::with_string(id).unwrap());
+    coll.update_one(doc!{"_id": id}, doc!{ "$set": {"name": name} }, None).unwrap()
 }
 
-pub fn update_topic() -> UpdateResult {
+pub fn delete_topic(id: &String) -> DeleteResult {
     let client = mongo_connector::get_conn();
     let coll = client.db("blog").collection("topic");
-    let id = Bson::ObjectId(ObjectId::with_string("5d888d78613465ee27188d6b").unwrap());
-    coll.update_one(doc!{"_id": id}, doc!{ "$set": {"name": "xujiyou123"} }, None).unwrap()
-}
-
-pub fn delete_topic() -> DeleteResult {
-    let client = mongo_connector::get_conn();
-    let coll = client.db("blog").collection("topic");
-    let id = Bson::ObjectId(ObjectId::with_string("5d888d78613465ee27188d6b").unwrap());
+    let id = Bson::ObjectId(ObjectId::with_string(id).unwrap());
     coll.delete_many(doc!{"_id": id}, None).unwrap()
 }

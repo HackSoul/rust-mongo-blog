@@ -6,6 +6,7 @@ use std::time::SystemTime;
 use mongodb::Bson;
 use mongodb::cursor::Cursor;
 use mongodb::ordered::OrderedDocument;
+use mongodb::coll::results::DeleteResult;
 
 #[derive(Debug, Deserialize)]
 pub struct Info {
@@ -27,5 +28,12 @@ pub fn find_topic_list() -> Result<web::Json<Vec<OrderedDocument>>>{
 }
 
 pub fn update_topic() -> Result<String> {
-    OK("haha")
+    topic_service::update_topic();
+    Ok(String::from("hah"))
+}
+
+pub fn delete_topic() -> Result<String> {
+    let result = topic_service::delete_topic();
+    println!("result is: {:?}", result);
+    Ok(String::from("haha"))
 }

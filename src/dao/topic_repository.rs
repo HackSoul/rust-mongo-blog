@@ -1,16 +1,14 @@
 use crate::dao::mongo_connector;
-use mongodb::ThreadedClient;
-use mongodb::{Bson, bson, doc};
-use mongodb::db::ThreadedDatabase;
 use crate::entity::topic::Topic;
+
+use mongodb::{Bson, bson, doc, ThreadedClient};
+use mongodb::db::ThreadedDatabase;
+use mongodb::coll::results::{InsertOneResult, UpdateResult, DeleteResult};
 use mongodb::cursor::Cursor;
+use mongodb::oid::ObjectId;
 
 use chrono::offset::Utc;
 use chrono::DateTime;
-use mongodb::coll::results::InsertOneResult;
-use mongodb::coll::results::UpdateResult;
-use mongodb::coll::results::DeleteResult;
-use mongodb::oid::ObjectId;
 
 pub fn create_topic(topic: Topic) -> InsertOneResult {
     let client = mongo_connector::get_conn();
@@ -23,7 +21,6 @@ pub fn create_topic(topic: Topic) -> InsertOneResult {
         "create_date": format!("{}", datetime.format("%Y-%m-%d %T")),
     };
 
-    // Insert document into 'test.movies' collection
     coll.insert_one(doc.clone(), None)
         .ok().expect("Failed to insert document.")
 }

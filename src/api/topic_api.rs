@@ -1,12 +1,12 @@
-use actix_web::{web, Result};
-use serde_derive::{Serialize, Deserialize};
 use crate::service::topic_service;
 use crate::entity::topic::Topic;
+
+use actix_web::{web, Result};
+use serde_derive::Deserialize;
+
 use std::time::SystemTime;
 use mongodb::Bson;
-use mongodb::cursor::Cursor;
 use mongodb::ordered::OrderedDocument;
-use mongodb::coll::results::DeleteResult;
 
 #[derive(Debug, Deserialize)]
 pub struct Info {

@@ -1,10 +1,9 @@
 use crate::entity::topic;
 use crate::dao::topic_repository;
+
 use mongodb::Bson;
-use mongodb::cursor::Cursor;
 use mongodb::ordered::OrderedDocument;
-use mongodb::coll::results::UpdateResult;
-use mongodb::coll::results::DeleteResult;
+use mongodb::coll::results::{UpdateResult, DeleteResult};
 
 pub fn create_topic(topic: topic::Topic) -> Bson {
     let result = topic_repository::create_topic(topic);

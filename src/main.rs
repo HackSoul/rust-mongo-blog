@@ -15,9 +15,9 @@ fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .wrap(middleware::Logger::default())
-            .service(web::resource("/").to(api::topic_api::create_topic))
-            .service(web::resource("/list").to(api::topic_api::find_topic_list))
-            .service(web::resource("/update").to(api::topic_api::update_topic))
-            .service(web::resource("/delete").to(api::topic_api::delete_topic))
+            .route("/list", web::get().to(api::topic_api::find_topic_list))
+            .route("/create", web::post().to(api::topic_api::create_topic))
+            .route("/update", web::post().to(api::topic_api::update_topic))
+            .route("/delete", web::post().to(api::topic_api::delete_topic))
     }).bind("127.0.0.1:8080")?.run()
 }

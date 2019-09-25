@@ -17,5 +17,5 @@ serde_derive = "1.0"
 json = "*"
 
 mongodb = "0.3.11"
-
 chrono = "0.4"
+actix-cors = "0.1.0"

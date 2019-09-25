@@ -6,7 +6,8 @@ mod entity;
 extern crate mongodb;
 extern crate chrono;
 
-use actix_web::{middleware, web, App, HttpServer};
+use actix_cors::Cors;
+use actix_web::{middleware, web, App, HttpServer, http::header};
 
 fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "actix_web=info");
@@ -14,6 +15,13 @@ fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         App::new()
+            .wrap(
+                Cors::new()
+                    .allowed_methods(vec!["GET", "POST", "OPTIONS", "PATCH", "DELETE", "PUT"])
+                    .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT, header::ORIGIN])
+                    .allowed_header(header::CONTENT_TYPE)
+                    .max_age(3600),
+            )
             .wrap(middleware::Logger::default())
             .route("/topic/list", web::get().to(api::topic_api::find_topic_list))
             .route("/topic/create", web::post().to(api::topic_api::create_topic))

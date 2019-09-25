@@ -30,6 +30,7 @@ pub fn create_article(article: Article) -> InsertOneResult {
 
     let doc = doc! {
         "title": article.title,
+        "topic_name": article.topic_name,
         "topic_id": article.topic_id,
         "create_date": format!("{}", datetime.format("%Y-%m-%d %T")),
         "tags": Bson::Array(tags_list),

@@ -15,7 +15,7 @@ pub fn find_article_list() -> Result<web::Json<Vec<OrderedDocument>>> {
 }
 
 pub fn create_article(info: web::Json<ArticleCreateRequest>) -> Result<web::Json<Bson>> {
-    let bson = article_service::create_article(&info.title, &info.topic_id, &info.tags, &info.markdown);
+    let bson = article_service::create_article(&info.title, &info.topic_name, &info.topic_id, &info.tags, &info.markdown);
     Ok(web::Json(bson))
 }
 

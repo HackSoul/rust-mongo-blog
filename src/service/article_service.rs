@@ -17,9 +17,10 @@ pub fn find_article_list() -> Vec<OrderedDocument> {
     doc_list
 }
 
-pub fn create_article(title: &String, topic_id: &String, tags: &Vec<String>, markdown: &String) -> Bson {
+pub fn create_article(title: &String, topic_name: &String, topic_id: &String, tags: &Vec<String>, markdown: &String) -> Bson {
     let result = article_repository::create_article(Article{
         title: String::from(title),
+        topic_name: String::from(topic_name),
         topic_id: String::from(topic_id),
         create_date: SystemTime::now(),
         tags: tags.clone(),

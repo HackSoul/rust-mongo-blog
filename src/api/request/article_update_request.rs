@@ -6,5 +6,6 @@ pub struct ArticleUpdateRequest {
     pub title: String,
     pub category: String,
     pub technology: String,
-    pub tags: Vec<String>
+    pub tags: Vec<String>,
+    pub introduce: String
 }

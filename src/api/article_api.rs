@@ -24,12 +24,13 @@ pub fn create_article(info: web::Json<ArticleCreateRequest>) -> Result<web::Json
         create_date: SystemTime::now(),
         tags: (&info.tags).clone(),
         view_count: 0,
+        introduce: String::from(&info.introduce),
     });
     Ok(web::Json(bson))
 }
 
 pub fn update_article(info: web::Json<ArticleUpdateRequest>) -> Result<web::Json<ArticleUpdateResponse>>  {
-    let result = article_service::update_article(&info.id, &info.title, &info.category, &info.technology, &info.tags);
+    let result = article_service::update_article(&info.id, &info.title, &info.category, &info.technology, &info.tags, &info.introduce);
     let resp = ArticleUpdateResponse {modified_count: result.modified_count};
     Ok(web::Json(resp))
 }

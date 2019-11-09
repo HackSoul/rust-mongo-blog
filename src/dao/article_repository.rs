@@ -41,7 +41,7 @@ pub fn create_article(article: Article) -> InsertOneResult {
         .ok().expect("Failed to insert document.")
 }
 
-pub fn update_article(id: &String, title: &String, category: &String, technology: &String, tags: &Vec<String>) -> UpdateResult {
+pub fn update_article(id: &String, title: &String, category: &String, technology: &String, tags: &Vec<String>, introduce: &String) -> UpdateResult {
     let client = mongo_connector::get_conn();
     let coll = client.db("blog").collection("article");
 
@@ -55,7 +55,8 @@ pub fn update_article(id: &String, title: &String, category: &String, technology
             "title": title,
             "category": category,
             "technology": technology,
-            "tags": tags_list
+            "tags": tags_list,
+            "introduce": introduce
         }
     };
 

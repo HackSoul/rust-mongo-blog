@@ -21,8 +21,8 @@ pub fn create_article(article: Article) -> Bson {
     result.inserted_id.unwrap()
 }
 
-pub fn update_article(id: &String, title: &String, category: &String, technology: &String, tags: &Vec<String>) -> UpdateResult {
-    article_repository::update_article(id, title, category, technology, tags)
+pub fn update_article(id: &String, title: &String, category: &String, technology: &String, tags: &Vec<String>, introduce: &String) -> UpdateResult {
+    article_repository::update_article(id, title, category, technology, tags, introduce)
 }
 
 pub fn delete_article(id: &String) -> DeleteResult {

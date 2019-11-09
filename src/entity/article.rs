@@ -7,4 +7,5 @@ pub struct Article {
     pub create_date: SystemTime, //创建时间
     pub tags: Vec<String>, //标签
     pub view_count: i32, //访问次数
+    pub introduce: String //短介绍
 }

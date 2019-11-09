@@ -1,6 +1,6 @@
 use serde_derive::Serialize;
 
 #[derive(Debug, Serialize)]
-pub struct TopicDeleteResponse {
+pub struct ArticleDeleteResponse {
     pub deleted_count: i32
 }

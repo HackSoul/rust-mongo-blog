@@ -1,2 +1,2 @@
-pub mod topic_update_response;
-pub mod topic_delete_response;
+pub mod article_delete_response;
+pub mod article_update_response;

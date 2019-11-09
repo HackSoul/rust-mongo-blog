@@ -8,6 +8,8 @@ use crate::service::article_service;
 use actix_web::{web, Result};
 use mongodb::Bson;
 use mongodb::ordered::OrderedDocument;
+use crate::entity::article::Article;
+use std::time::SystemTime;
 
 pub fn find_article_list() -> Result<web::Json<Vec<OrderedDocument>>> {
     let result = article_service::find_article_list();
@@ -15,12 +17,19 @@ pub fn find_article_list() -> Result<web::Json<Vec<OrderedDocument>>> {
 }
 
 pub fn create_article(info: web::Json<ArticleCreateRequest>) -> Result<web::Json<Bson>> {
-    let bson = article_service::create_article(&info.title, &info.topic_name, &info.topic_id, &info.tags, &info.markdown);
+    let bson = article_service::create_article(Article{
+        title: String::from(&info.title),
+        category: String::from(&info.category),
+        technology: String::from(&info.technology),
+        create_date: SystemTime::now(),
+        tags: (&info.tags).clone(),
+        view_count: 0,
+    });
     Ok(web::Json(bson))
 }
 
 pub fn update_article(info: web::Json<ArticleUpdateRequest>) -> Result<web::Json<ArticleUpdateResponse>>  {
-    let result = article_service::update_article(&info.id, &info.title, &info.tags, &info.markdown);
+    let result = article_service::update_article(&info.id, &info.title, &info.category, &info.technology, &info.tags);
     let resp = ArticleUpdateResponse {modified_count: result.modified_count};
     Ok(web::Json(resp))
 }

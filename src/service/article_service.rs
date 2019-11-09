@@ -4,7 +4,6 @@ use crate::entity::article::Article;
 use mongodb::Bson;
 use mongodb::ordered::OrderedDocument;
 use mongodb::coll::results::{UpdateResult, DeleteResult};
-use std::time::SystemTime;
 
 pub fn find_article_list() -> Vec<OrderedDocument> {
     let cursor = article_repository::find_article_list();
@@ -17,21 +16,13 @@ pub fn find_article_list() -> Vec<OrderedDocument> {
     doc_list
 }
 
-pub fn create_article(title: &String, topic_name: &String, topic_id: &String, tags: &Vec<String>, markdown: &String) -> Bson {
-    let result = article_repository::create_article(Article{
-        title: String::from(title),
-        topic_name: String::from(topic_name),
-        topic_id: String::from(topic_id),
-        create_date: SystemTime::now(),
-        tags: tags.clone(),
-        view_count: 0,
-        markdown: String::from(markdown)
-    });
+pub fn create_article(article: Article) -> Bson {
+    let result = article_repository::create_article(article);
     result.inserted_id.unwrap()
 }
 
-pub fn update_article(id: &String, title: &String, tags: &Vec<String>, markdown: &String) -> UpdateResult {
-    article_repository::update_article(id, title, tags, markdown)
+pub fn update_article(id: &String, title: &String, category: &String, technology: &String, tags: &Vec<String>) -> UpdateResult {
+    article_repository::update_article(id, title, category, technology, tags)
 }
 
 pub fn delete_article(id: &String) -> DeleteResult {

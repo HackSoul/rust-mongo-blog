@@ -2,9 +2,8 @@ use serde_derive::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct ArticleCreateRequest {
-    pub title: String,
-    pub topic_name: String,
-    pub topic_id: String,
-    pub tags: Vec<String>,
-    pub markdown: String
+    pub title: String, //题目
+    pub category: String, //分类，如大数据，云原声等
+    pub technology: String, //技术，如Docker，k8s等
+    pub tags: Vec<String>, //标签
 }

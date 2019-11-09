@@ -30,19 +30,18 @@ pub fn create_article(article: Article) -> InsertOneResult {
 
     let doc = doc! {
         "title": article.title,
-        "topic_name": article.topic_name,
-        "topic_id": article.topic_id,
+        "category": article.category,
+        "technology": article.technology,
         "create_date": format!("{}", datetime.format("%Y-%m-%d %T")),
         "tags": Bson::Array(tags_list),
-        "view_count": article.view_count,
-        "markdown": article.markdown
+        "view_count": article.view_count
     };
 
     coll.insert_one(doc, None)
         .ok().expect("Failed to insert document.")
 }
 
-pub fn update_article(id: &String, title: &String, tags: &Vec<String>, markdown: &String) -> UpdateResult {
+pub fn update_article(id: &String, title: &String, category: &String, technology: &String, tags: &Vec<String>) -> UpdateResult {
     let client = mongo_connector::get_conn();
     let coll = client.db("blog").collection("article");
 
@@ -54,8 +53,9 @@ pub fn update_article(id: &String, title: &String, tags: &Vec<String>, markdown:
     let doc = doc! {
         "$set": {
             "title": title,
-            "tags": tags_list,
-            "markdown": markdown
+            "category": category,
+            "technology": technology,
+            "tags": tags_list
         }
     };
 

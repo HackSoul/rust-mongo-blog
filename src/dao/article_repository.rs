@@ -11,11 +11,24 @@ use mongodb::oid::ObjectId;
 
 use chrono::offset::Utc;
 use chrono::DateTime;
+use crate::api::request::article_find_request::ArticleFindRequest;
 
-pub fn find_article_list() -> Cursor {
+pub fn find_article_list(page: u32, request: ArticleFindRequest) -> Cursor {
     let client = mongo_connector::get_conn();
     let coll = client.db("blog").collection("article");
-    coll.find(None, None).unwrap()
+    let mut search_vec = vec![
+        doc! { "$sort" : { "create_date" : 1}},
+        doc! { "$skip" : page },
+        doc! { "$limit" : 20 }
+    ];
+    if request.category != None {
+        search_vec.push(doc! { "$match": { "category": request.category.unwrap()}});
+    }
+    if request.technology != None {
+        search_vec.push(doc! { "$match": { "technology": request.technology.unwrap()}});
+    }
+    coll.aggregate(search_vec, None).unwrap()
+    //coll.find(None, None).sort(doc! {"create_date": 1}).skip(page).limit(20).unwrap()
 }
 
 pub fn create_article(article: Article) -> InsertOneResult {
@@ -34,7 +47,8 @@ pub fn create_article(article: Article) -> InsertOneResult {
         "technology": article.technology,
         "create_date": format!("{}", datetime.format("%Y-%m-%d %T")),
         "tags": Bson::Array(tags_list),
-        "view_count": article.view_count
+        "view_count": article.view_count,
+        "introduce": article.introduce
     };
 
     coll.insert_one(doc, None)

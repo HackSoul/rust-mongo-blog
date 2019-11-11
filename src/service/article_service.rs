@@ -4,9 +4,10 @@ use crate::entity::article::Article;
 use mongodb::Bson;
 use mongodb::ordered::OrderedDocument;
 use mongodb::coll::results::{UpdateResult, DeleteResult};
+use crate::api::request::article_find_request::ArticleFindRequest;
 
-pub fn find_article_list() -> Vec<OrderedDocument> {
-    let cursor = article_repository::find_article_list();
+pub fn find_article_list(page: u32, request: ArticleFindRequest) -> Vec<OrderedDocument> {
+    let cursor = article_repository::find_article_list(page, request);
     let mut doc_list: Vec<OrderedDocument> = vec![];
     for result in cursor {
         if let Ok(item) = result {

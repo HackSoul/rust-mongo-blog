@@ -10,9 +10,10 @@ use mongodb::Bson;
 use mongodb::ordered::OrderedDocument;
 use crate::entity::article::Article;
 use std::time::SystemTime;
+use crate::api::request::article_find_request::ArticleFindRequest;
 
-pub fn find_article_list() -> Result<web::Json<Vec<OrderedDocument>>> {
-    let result = article_service::find_article_list();
+pub fn find_article_list(path_variable: web::Path<u32>, request: web::Query<ArticleFindRequest>) -> Result<web::Json<Vec<OrderedDocument>>> {
+    let result = article_service::find_article_list(path_variable.into_inner() - 1, request.into_inner());
     Ok(web::Json(result))
 }
 
